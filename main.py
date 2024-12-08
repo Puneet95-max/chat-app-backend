@@ -5,7 +5,6 @@ from typing import List
 app = FastAPI()
 
 active_connections: List[WebSocket] = []
-
 async def broadcast_message(message: str):
     for connection in active_connections:
         await connection.send_text(message)
@@ -20,3 +19,7 @@ async def chat(websocket: WebSocket):
             await broadcast_message(data)
     except Exception:
         active_connections.remove(websocket)
+
+@app.get("/")
+async def root():
+    print("hello")
